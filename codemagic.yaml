@@ -1,0 +1,54 @@
+# Codemagic twin of .github/workflows/ios.yml: builds the app's unsigned
+# IPA on demand. Start it from the Codemagic UI, or with
+#   POST https://api.codemagic.io/builds
+#   {"appId": "...", "workflowId": "ios-ipa", "branch": "main"}
+# The IPA is unsigned; signing is covered in docs/IOS.md.
+workflows:
+  ios-ipa:
+    name: iOS IPA
+    instance_type: mac_mini_m4
+    max_build_duration: 60
+    environment:
+      xcode: latest
+      vars:
+        FLUTTER_VERSION: 3.47.7
+        GOMOBILE_VERSION: v0.0.0-20260908204917-8b95e45f8d3e
+        GO_VERSION: 1.27.2
+    scripts:
+      - name: Toolchain (Go + Flutter)
+        script: |
+          set -euxo pipefail
+          mkdir -p "$HOME/go-sdk"
+          cd "$HOME/go-sdk"
+          curl -fsSLO "https://go.dev/dl/go${GO_VERSION}.darwin-arm64.tar.gz"
+          rm -rf go
+          tar -xzf "go${GO_VERSION}.darwin-arm64.tar.gz"
+          "$HOME/go-sdk/go/bin/go" version
+          git clone --depth 1 --branch "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$HOME/flutter"
+          "$HOME/flutter/bin/flutter" --version
+      - name: Core framework (gomobile bind)
+        script: |
+          set -euxo pipefail
+          export PATH="$HOME/go-sdk/go/bin:$HOME/go/bin:$HOME/flutter/bin:$PATH"
+          cd core
+          go install "golang.org/x/mobile/cmd/gomobile@$GOMOBILE_VERSION" "golang.org/x/mobile/cmd/gobind@$GOMOBILE_VERSION"
+          v="$(sed -n 's/^version:[[:space:]]*\([0-9.]*\).*/\1/p' ../app/pubspec.yaml)"
+          "$(go env GOPATH)/bin/gomobile" bind -target=ios -iosversion 15.0 -trimpath \
+            -ldflags "-s -w -X github.com/astwdnya/firefox-vpn-client/core/internal/version.Current=$v" \
+            -o ../app/ios/Core.xcframework ./mobile
+      - name: Flutter build + IPA
+        script: |
+          set -euxo pipefail
+          export PATH="$HOME/flutter/bin:$HOME/go-sdk/go/bin:$HOME/go/bin:$PATH"
+          cd app
+          v="$(sed -n 's/^version:[[:space:]]*\([0-9.]*\).*/\1/p' pubspec.yaml)"
+          flutter pub get
+          flutter build ios --release --no-codesign --dart-define=APP_VERSION=$v
+          mkdir -p ../out/Payload
+          cp -R build/ios/iphoneos/Runner.app ../out/Payload/
+          cd ../out
+          zip -qry "Firefox-VPN-$v-iOS-unsigned.ipa" Payload
+          rm -rf Payload
+          ls -la
+    artifacts:
+      - out/*.ipa
