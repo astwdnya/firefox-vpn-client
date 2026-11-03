@@ -23,15 +23,16 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     private var watching = false
 
     override func startTunnel(
-        _ options: [String: NSObject]?,
-        completionHandler: @escaping (Error?) -> Void
+        options: [String: Any]?,
+        completionHandler: @escaping () -> Void
     ) {
         stopped = false
         let dir = Self.dataDir()
         var err: NSError?
         guard MobileStart(dir, true, &err) else {
-            completionHandler(TunnelError(
+            cancelTunnelWithError(TunnelError(
                 "the core did not start: \(err?.localizedDescription ?? MobileLastError())"))
+            completionHandler()
             return
         }
         // Like CoreService.onStartCommand: on already after the button.
@@ -39,10 +40,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             MobileSetOn(true)
         }
         MobileNetworkChanged(true)
-        guard let configPath = MobileTunConfig(Self.mtu, &err) else {
+        let configPath = MobileTunConfig(Self.mtu, &err)
+        guard err == nil, !configPath.isEmpty else {
             MobileStop()
-            completionHandler(TunnelError(
-                "the tunnel's configuration did not write: \(err?.localizedDescription ?? "no error")"))
+            cancelTunnelWithError(TunnelError(
+                "the tunnel's configuration did not write: \(err?.localizedDescription ?? MobileLastError())"))
+            completionHandler()
             return
         }
         let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "172.19.0.1")
@@ -61,16 +64,18 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             if let error {
                 MobileStopTun()
                 MobileStop()
-                completionHandler(error)
+                self.cancelTunnelWithError(error)
+                completionHandler()
                 return
             }
             guard self.runHev(configPath: configPath) else {
                 MobileStopTun()
                 MobileStop()
-                completionHandler(TunnelError("the tunnel's library did not start"))
+                self.cancelTunnelWithError(TunnelError("the tunnel's library did not start"))
+                completionHandler()
                 return
             }
-            completionHandler(nil)
+            completionHandler()
             self.watch()
         }
     }
@@ -128,7 +133,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 break
             }
             let packet = Data(bytes: buffer, count: n)
-            packetFlow.writePackets([packet], withProtocols: nil)
+            // The flow wants the packet's IP version as its protocol stack.
+            let version = (packet.first ?? 0) >> 4
+            let proto = NSNumber(value: version == 6 ? AF_INET6 : AF_INET)
+            packetFlow.writePackets([packet], withProtocols: [proto])
         }
     }
 
