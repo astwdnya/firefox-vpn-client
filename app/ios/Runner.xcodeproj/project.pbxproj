@@ -78,7 +78,6 @@
 		62FE9C28F1EE5AC5960D3BCF /* hev-memory-allocator-api.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BDF14D1825D1BCDFA6B3BC9 /* hev-memory-allocator-api.c */; };
 		B5026C05940097FF7CDA06B6 /* hev-memory-allocator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CEF46AE7004216761DF93AC /* hev-memory-allocator.c */; };
 		A71B238A3FEA0264C7980872 /* hev-memory-allocator-simple.c in Sources */ = {isa = PBXBuildFile; fileRef = C2092334584F3CD426E2BBA9 /* hev-memory-allocator-simple.c */; };
-		1EBBF472ED62B88E97EE287E /* hev-memory-allocator-slice.c in Sources */ = {isa = PBXBuildFile; fileRef = ADCD8557E425AA870C214E86 /* hev-memory-allocator-slice.c */; };
 		6222053521F434019E631541 /* hev-sys-errno.c in Sources */ = {isa = PBXBuildFile; fileRef = F879E437B9BC3D56CA6A70B3 /* hev-sys-errno.c */; };
 		1E1C78F01530306E9324C745 /* hev-sys-fd.c in Sources */ = {isa = PBXBuildFile; fileRef = DDBB0F4006C525F56AA87918 /* hev-sys-fd.c */; };
 		268529E5B7707B757BF69DB5 /* hev-sys-fdio.c in Sources */ = {isa = PBXBuildFile; fileRef = A6A57ADB20E128A5F559292A /* hev-sys-fdio.c */; };
@@ -1739,7 +1738,6 @@
 				62FE9C28F1EE5AC5960D3BCF /* hev-memory-allocator-api.c in Sources */,
 				B5026C05940097FF7CDA06B6 /* hev-memory-allocator.c in Sources */,
 				A71B238A3FEA0264C7980872 /* hev-memory-allocator-simple.c in Sources */,
-				1EBBF472ED62B88E97EE287E /* hev-memory-allocator-slice.c in Sources */,
 				6222053521F434019E631541 /* hev-sys-errno.c in Sources */,
 				1E1C78F01530306E9324C745 /* hev-sys-fd.c in Sources */,
 				268529E5B7707B757BF69DB5 /* hev-sys-fdio.c in Sources */,
@@ -1901,7 +1899,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = PacketTunnel/PacketTunnel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -1931,6 +1929,12 @@
 					"-DFD_SET_DEFINED",
 					"-DSOCKLEN_T_DEFINED",
 					"-DENABLE_LIBRARY",
+					"-DENABLE_STACK_OVERFLOW_DETECTION",
+					"-DENABLE_IO_SPLICE_SYSCALL",
+					"-DCONFIG_STACK_BACKEND=STACK_MMAP",
+					"-DCONFIG_STACK_OVERFLOW_DETECTION=1",
+					"-DCONFIG_SCHED_CLOCK=CLOCK_NONE",
+					"-DCONFIG_SCHED_IO_POLL_INTERVAL=50000",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1946,7 +1950,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = PacketTunnel/PacketTunnel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -1976,6 +1980,12 @@
 					"-DFD_SET_DEFINED",
 					"-DSOCKLEN_T_DEFINED",
 					"-DENABLE_LIBRARY",
+					"-DENABLE_STACK_OVERFLOW_DETECTION",
+					"-DENABLE_IO_SPLICE_SYSCALL",
+					"-DCONFIG_STACK_BACKEND=STACK_MMAP",
+					"-DCONFIG_STACK_OVERFLOW_DETECTION=1",
+					"-DCONFIG_SCHED_CLOCK=CLOCK_NONE",
+					"-DCONFIG_SCHED_IO_POLL_INTERVAL=50000",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1991,7 +2001,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = PacketTunnel/PacketTunnel.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -2021,6 +2031,12 @@
 					"-DFD_SET_DEFINED",
 					"-DSOCKLEN_T_DEFINED",
 					"-DENABLE_LIBRARY",
+					"-DENABLE_STACK_OVERFLOW_DETECTION",
+					"-DENABLE_IO_SPLICE_SYSCALL",
+					"-DCONFIG_STACK_BACKEND=STACK_MMAP",
+					"-DCONFIG_STACK_OVERFLOW_DETECTION=1",
+					"-DCONFIG_SCHED_CLOCK=CLOCK_NONE",
+					"-DCONFIG_SCHED_IO_POLL_INTERVAL=50000",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
