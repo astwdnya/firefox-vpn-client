@@ -207,7 +207,7 @@ import UIKit
                                 // configurationDisabled.
                                 try manager.connection.startVPNTunnel()
                             } catch {
-                                let code = (error as? NEVPNError) == .configurationDisabled
+                                let code = (error as? NEVPNError)?.code == .configurationDisabled
                                     ? "vpn_denied" : "start_failed"
                                 result(FlutterError(
                                     code: code, message: error.localizedDescription, details: nil))
