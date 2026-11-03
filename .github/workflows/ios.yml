@@ -1,0 +1,59 @@
+# Builds the iOS app's unsigned IPA, and nothing else: "Run workflow"
+# whenever you want a fresh IPA without tagging a release. The Build
+# workflow builds it too, for a release. The IPA is unsigned; signing is
+# docs/IOS.md.
+name: iOS IPA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: 3.47.7
+  GOMOBILE_VERSION: v0.0.0-20260908204917-8b95e45f8d3e
+
+jobs:
+  ipa:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: core/go.mod
+          cache-dependency-path: core/go.sum
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Core framework
+        working-directory: core
+        run: |
+          go install "golang.org/x/mobile/cmd/gomobile@$GOMOBILE_VERSION" "golang.org/x/mobile/cmd/gobind@$GOMOBILE_VERSION"
+          v="$(sed -n 's/^version:[[:space:]]*\([0-9.]*\).*/\1/p' ../app/pubspec.yaml)"
+          "$(go env GOPATH)/bin/gomobile" bind -target=ios -iosversion 15.0 -trimpath \
+            -ldflags "-s -w -X github.com/astwdnya/firefox-vpn-client/core/internal/version.Current=$v" \
+            -o ../app/ios/Core.xcframework ./mobile
+      - name: Build
+        working-directory: app
+        run: |
+          v="$(sed -n 's/^version:[[:space:]]*\([0-9.]*\).*/\1/p' pubspec.yaml)"
+          flutter pub get
+          flutter build ios --release --no-codesign --dart-define=APP_VERSION=$v
+          mkdir -p ../out/Payload
+          cp -R build/ios/iphoneos/Runner.app ../out/Payload/
+          cd ../out
+          zip -qry "Firefox-VPN-$v-iOS-unsigned.ipa" Payload
+          rm -rf Payload
+          ls -la
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ios-ipa
+          path: out/*
+          if-no-files-found: error

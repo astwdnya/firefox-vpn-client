@@ -1,6 +1,6 @@
 # Tests every push and pull request. A tag "v<version>" (the version in
-# app/pubspec.yaml) also builds Windows, macOS, Android, Linux, and the Linux
-# core, and publishes them as a GitHub release, each file twice: under a
+# app/pubspec.yaml) also builds Windows, macOS, Android, iOS, Linux, and the
+# Linux core, and publishes them as a GitHub release, each file twice: under a
 # fixed name, which the README's releases/latest/download links fetch, and
 # with the version in its name (Firefox-VPN-1.2.3-Android-arm64-v8a.apk),
 # which the release's own notes and the app's Download button use, so a
@@ -57,9 +57,9 @@ jobs:
       - name: Update notice
         run: |
           jq -e 'type == "object"
-            and all(keys[]; IN("android", "linux", "macos", "windows"))
+            and all(keys[]; IN("android", "ios", "linux", "macos", "windows"))
             and all(.[]; type == "string" and test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' .github/updates.json >/dev/null || {
-            echo "::error::updates.json must be an object whose keys are android, linux, macos, or windows, each with a \"major.minor.patch\" version"
+            echo "::error::updates.json must be an object whose keys are android, ios, linux, macos, or windows, each with a \"major.minor.patch\" version"
             exit 1
           }
           # A version that is never released would stop that system's
@@ -188,7 +188,7 @@ jobs:
         run: |
           v='${{ needs.test.outputs.version }}'
           mkdir -p app/android/app/libs
-          flags="-s -w -X github.com/armanlife/firefox-vpn-client/core/internal/version.Current=$v"
+          flags="-s -w -X github.com/astwdnya/firefox-vpn-client/core/internal/version.Current=$v"
           (cd core && gomobile bind -target=android -androidapi 24 -trimpath \
             -ldflags "$flags" \
             -o ../app/android/app/libs/core.aar ./mobile)
@@ -207,6 +207,50 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: android
+          path: out/*
+          if-no-files-found: error
+
+  ios:
+    needs: test
+    if: (startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch') && (vars.PLATFORMS == '' || contains(vars.PLATFORMS, 'ios'))
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: core/go.mod
+          cache-dependency-path: core/go.sum
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      # The core as an XCFramework (app/ios/Core.xcframework), which both
+      # the app and the tunnel's extension link.
+      - name: Core framework
+        working-directory: core
+        run: |
+          go install "golang.org/x/mobile/cmd/gomobile@$GOMOBILE_VERSION" "golang.org/x/mobile/cmd/gobind@$GOMOBILE_VERSION"
+          v='${{ needs.test.outputs.version }}'
+          "$(go env GOPATH)/bin/gomobile" bind -target=ios -iosversion 15.0 -trimpath \
+            -ldflags "-s -w -X github.com/astwdnya/firefox-vpn-client/core/internal/version.Current=$v" \
+            -o ../app/ios/Core.xcframework ./mobile
+      # Unsigned: the user signs it (docs/IOS.md), as no certificate is in
+      # this repository. The tunnel's extension goes inside the app bundle.
+      - name: Build
+        working-directory: app
+        run: |
+          v='${{ needs.test.outputs.version }}'
+          flutter pub get
+          flutter build ios --release --no-codesign --dart-define=APP_VERSION=$v
+          mkdir -p ../out/Payload
+          cp -R build/ios/iphoneos/Runner.app ../out/Payload/
+          cd ../out
+          zip -qry "Firefox-VPN-$v-iOS-unsigned.ipa" Payload
+          rm -rf Payload
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ios
           path: out/*
           if-no-files-found: error
 
@@ -391,7 +435,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [test, windows, android, linux, linux-desktop, macos]
+    needs: [test, windows, android, ios, linux, linux-desktop, macos]
     # A platform left out by PLATFORMS is skipped, not failed: the release
     # goes on with the rest.
     if: startsWith(github.ref, 'refs/tags/v') && !failure() && !cancelled()
