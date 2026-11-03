@@ -200,20 +200,21 @@ import UIKit
                                 code: "vpn_denied", message: error.localizedDescription, details: nil))
                             return
                         }
-                        manager.loadFromPreferences { _, _ in
-                            // The system asks to allow the VPN the first
-                            // time; a refusal comes as configurationDisabled.
-                            manager.connection.startVPNTunnel { error in
-                                if let error {
-                                    let code = (error as? NEVPNError) == .configurationDisabled
-                                        ? "vpn_denied" : "start_failed"
-                                    result(FlutterError(
-                                        code: code, message: error.localizedDescription, details: nil))
-                                    return
-                                }
-                                current = manager
-                                result(nil)
+                        manager.loadFromPreferences { _ in
+                            do {
+                                // The system asks to allow the VPN the
+                                // first time; a refusal comes as
+                                // configurationDisabled.
+                                try manager.connection.startVPNTunnel()
+                            } catch {
+                                let code = (error as? NEVPNError) == .configurationDisabled
+                                    ? "vpn_denied" : "start_failed"
+                                result(FlutterError(
+                                    code: code, message: error.localizedDescription, details: nil))
+                                return
                             }
+                            current = manager
+                            result(nil)
                         }
                     }
                 }
