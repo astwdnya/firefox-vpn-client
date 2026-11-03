@@ -1939,7 +1939,7 @@
 					"-DYAML_VERSION_MAJOR=0",
 					"-DYAML_VERSION_MINOR=2",
 					"-DYAML_VERSION_PATCH=5",
-					"-DYAML_VERSION_STRING=\"0.2.5\"",
+					"-DYAML_VERSION_STRING=\\\"0.2.5\\\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1995,7 +1995,7 @@
 					"-DYAML_VERSION_MAJOR=0",
 					"-DYAML_VERSION_MINOR=2",
 					"-DYAML_VERSION_PATCH=5",
-					"-DYAML_VERSION_STRING=\"0.2.5\"",
+					"-DYAML_VERSION_STRING=\\\"0.2.5\\\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2051,7 +2051,7 @@
 					"-DYAML_VERSION_MAJOR=0",
 					"-DYAML_VERSION_MINOR=2",
 					"-DYAML_VERSION_PATCH=5",
-					"-DYAML_VERSION_STRING=\"0.2.5\"",
+					"-DYAML_VERSION_STRING=\\\"0.2.5\\\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.arman.firefoxvpn.PacketTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
