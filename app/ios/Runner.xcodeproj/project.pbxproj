@@ -89,11 +89,8 @@
 		0B6008D0E3391F0C9918EB19 /* hev-sys-thread.c in Sources */ = {isa = PBXBuildFile; fileRef = EEA4B5C1DBF7CC4F651935F4 /* hev-sys-thread.c */; };
 		9122F52F0A36C68470B9DBDE /* hev-sys-time.c in Sources */ = {isa = PBXBuildFile; fileRef = 67F4E07E56B9F9FBC0859222 /* hev-sys-time.c */; };
 		70B1110ACE3EBB04096E4F5E /* hev-sys.c in Sources */ = {isa = PBXBuildFile; fileRef = FD5F015ED21CD541A7F030DD /* hev-sys.c */; };
-		58DCC3563E0D4F6A71DCC4FB /* api_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = 6771EC15971A6A5838019C51 /* api_lib.c */; };
-		1E49588B9E0AE4D6BE85094B /* api_msg.c in Sources */ = {isa = PBXBuildFile; fileRef = 013DF854D241BDC171ED4F67 /* api_msg.c */; };
 		966AAF8861D0CF2EE59F0BBA /* err.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C05CF8C60C6A9DBB6489115 /* err.c */; };
 		DF32D6FECC10DC853924B4E9 /* if_api.c in Sources */ = {isa = PBXBuildFile; fileRef = A946D8ED2D90560EC93EAECC /* if_api.c */; };
-		0B39798631B36E9D1663F391 /* netbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = 9E28EE5B2711A39F4C49D886 /* netbuf.c */; };
 		4811A437D5C47DED696A2A2C /* netdb.c in Sources */ = {isa = PBXBuildFile; fileRef = AD66994F5A0DA15AC1B0FA92 /* netdb.c */; };
 		0A0FB81CE2B1B2BA7D3FFBF4 /* netifapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0AC2D2C9499B6D4640CF5495 /* netifapi.c */; };
 		328945503BDD65ED9721ABB4 /* sockets.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DCCFC479758C308D7D48C9 /* sockets.c */; };
@@ -1752,11 +1749,8 @@
 				0B6008D0E3391F0C9918EB19 /* hev-sys-thread.c in Sources */,
 				9122F52F0A36C68470B9DBDE /* hev-sys-time.c in Sources */,
 				70B1110ACE3EBB04096E4F5E /* hev-sys.c in Sources */,
-				58DCC3563E0D4F6A71DCC4FB /* api_lib.c in Sources */,
-				1E49588B9E0AE4D6BE85094B /* api_msg.c in Sources */,
 				966AAF8861D0CF2EE59F0BBA /* err.c in Sources */,
 				DF32D6FECC10DC853924B4E9 /* if_api.c in Sources */,
-				0B39798631B36E9D1663F391 /* netbuf.c in Sources */,
 				4811A437D5C47DED696A2A2C /* netdb.c in Sources */,
 				0A0FB81CE2B1B2BA7D3FFBF4 /* netifapi.c in Sources */,
 				328945503BDD65ED9721ABB4 /* sockets.c in Sources */,
