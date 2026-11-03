@@ -23,16 +23,15 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     private var watching = false
 
     override func startTunnel(
-        options: [String: Any]?,
-        completionHandler: @escaping () -> Void
+        options: [String: NSObject]?,
+        completionHandler: @escaping (Error?) -> Void
     ) {
         stopped = false
         let dir = Self.dataDir()
         var err: NSError?
         guard MobileStart(dir, true, &err) else {
-            cancelTunnelWithError(TunnelError(
+            completionHandler(TunnelError(
                 "the core did not start: \(err?.localizedDescription ?? MobileLastError())"))
-            completionHandler()
             return
         }
         // Like CoreService.onStartCommand: on already after the button.
@@ -43,9 +42,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         let configPath = MobileTunConfig(Self.mtu, &err)
         guard err == nil, !configPath.isEmpty else {
             MobileStop()
-            cancelTunnelWithError(TunnelError(
+            completionHandler(TunnelError(
                 "the tunnel's configuration did not write: \(err?.localizedDescription ?? MobileLastError())"))
-            completionHandler()
             return
         }
         let settings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "172.19.0.1")
@@ -64,18 +62,16 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             if let error {
                 MobileStopTun()
                 MobileStop()
-                self.cancelTunnelWithError(error)
-                completionHandler()
+                completionHandler(error)
                 return
             }
             guard self.runHev(configPath: configPath) else {
                 MobileStopTun()
                 MobileStop()
-                self.cancelTunnelWithError(TunnelError("the tunnel's library did not start"))
-                completionHandler()
+                completionHandler(TunnelError("the tunnel's library did not start"))
                 return
             }
-            completionHandler()
+            completionHandler(nil)
             self.watch()
         }
     }
