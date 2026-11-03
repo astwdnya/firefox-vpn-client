@@ -199,6 +199,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		E5867EBC4245494789BBCFE8 /* hev-task-execute.S in Sources */ = {isa = PBXBuildFile; fileRef = 04310172450D48448535B681 /* hev-task-execute.S */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1395,6 +1396,7 @@
 				EEF89C8E2708CB36F08C4940 /* reader.c */,
 				342586EDB72EAD58DA317BE6 /* scanner.c */,
 				A4C1C66A5EECDC48E5823DE0 /* writer.c */,
+				04310172450D48448535B681 /* hev-task-execute.S */,
 			);
 			name = third-part; sourceTree = "<group>"; };
 		85FD024624D84A4290A9BFD1 /* src */ = {isa = PBXGroup; children = (
@@ -1452,6 +1454,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4ED1919528CD2F03A28EB4EC /* PacketTunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PacketTunnel.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		04310172450D48448535B681 /* hev-task-execute.S */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.cpp; name = hev-task-execute.S; path = third-part/hev-task-system/src/kern/task/hev-task-execute.S; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1852,6 +1855,7 @@
 				68FA9889A7B44DD794D9AB72 /* reader.c in Sources */,
 				B0F54DC2DE20553ED597F95D /* scanner.c in Sources */,
 				75FFB74384A60C2BAE3DFF59 /* writer.c in Sources */,
+				E5867EBC4245494789BBCFE8 /* hev-task-execute.S in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
