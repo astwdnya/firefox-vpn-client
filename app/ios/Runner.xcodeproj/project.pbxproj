@@ -68,13 +68,11 @@
 		E6B323B6C23DDBE46C652A30 /* hev-task-io-pipe.c in Sources */ = {isa = PBXBuildFile; fileRef = AEE9FE37C43402E63351069C /* hev-task-io-pipe.c */; };
 		109909ED41BF36D697E4C466 /* hev-task-io-poll.c in Sources */ = {isa = PBXBuildFile; fileRef = 779C4DDA1968E099CDEAC910 /* hev-task-io-poll.c */; };
 		2B4A308C6174F83D3F9FD054 /* hev-task-io-socket.c in Sources */ = {isa = PBXBuildFile; fileRef = 397C979296E26017BA3720E4 /* hev-task-io-socket.c */; };
-		C85320E3B1D7C6B849EC661B /* hev-list.c in Sources */ = {isa = PBXBuildFile; fileRef = 71C387C3442DAF46264242B7 /* hev-list.c */; };
 		0798BE99693876BBC6321C40 /* hev-debugger.c in Sources */ = {isa = PBXBuildFile; fileRef = F22A10695BFDAA39048BA429 /* hev-debugger.c */; };
 		AED14AD4B4E33B1DD7E7C265 /* hev-task-stack-detector.c in Sources */ = {isa = PBXBuildFile; fileRef = 28D11D1E3E00B01F7448A229 /* hev-task-stack-detector.c */; };
 		31A209EDDAE65925FE176389 /* hev-object-atomic.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD735224D124BF97BD9034 /* hev-object-atomic.c */; };
 		88D25204FEEC21CDFAFA1FB0 /* hev-object.c in Sources */ = {isa = PBXBuildFile; fileRef = 44340D403A29CE40AE46DEA4 /* hev-object.c */; };
 		144D5394E32EEF04628CF854 /* hev-rbtree-cached.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F736764548670974B528012 /* hev-rbtree-cached.c */; };
-		019610D68B4F97DCCA18B00F /* hev-rbtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5B4B75722D5E1FCB04BD1 /* hev-rbtree.c */; };
 		62FE9C28F1EE5AC5960D3BCF /* hev-memory-allocator-api.c in Sources */ = {isa = PBXBuildFile; fileRef = 2BDF14D1825D1BCDFA6B3BC9 /* hev-memory-allocator-api.c */; };
 		B5026C05940097FF7CDA06B6 /* hev-memory-allocator.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CEF46AE7004216761DF93AC /* hev-memory-allocator.c */; };
 		A71B238A3FEA0264C7980872 /* hev-memory-allocator-simple.c in Sources */ = {isa = PBXBuildFile; fileRef = C2092334584F3CD426E2BBA9 /* hev-memory-allocator-simple.c */; };
@@ -1728,13 +1726,11 @@
 				E6B323B6C23DDBE46C652A30 /* hev-task-io-pipe.c in Sources */,
 				109909ED41BF36D697E4C466 /* hev-task-io-poll.c in Sources */,
 				2B4A308C6174F83D3F9FD054 /* hev-task-io-socket.c in Sources */,
-				C85320E3B1D7C6B849EC661B /* hev-list.c in Sources */,
 				0798BE99693876BBC6321C40 /* hev-debugger.c in Sources */,
 				AED14AD4B4E33B1DD7E7C265 /* hev-task-stack-detector.c in Sources */,
 				31A209EDDAE65925FE176389 /* hev-object-atomic.c in Sources */,
 				88D25204FEEC21CDFAFA1FB0 /* hev-object.c in Sources */,
 				144D5394E32EEF04628CF854 /* hev-rbtree-cached.c in Sources */,
-				019610D68B4F97DCCA18B00F /* hev-rbtree.c in Sources */,
 				62FE9C28F1EE5AC5960D3BCF /* hev-memory-allocator-api.c in Sources */,
 				B5026C05940097FF7CDA06B6 /* hev-memory-allocator.c in Sources */,
 				A71B238A3FEA0264C7980872 /* hev-memory-allocator-simple.c in Sources */,
